@@ -28,6 +28,16 @@ void ARP_Character::MoveRight(float value)
 	AddMovementInput(GetActorRightVector() * value);
 }
 
+void ARP_Character::Jump()
+{
+	Super::Jump();
+}
+
+void ARP_Character::StopJumping()
+{
+	Super::StopJumping();
+}
+
 // Called every frame
 void ARP_Character::Tick(float DeltaTime)
 {
@@ -42,5 +52,8 @@ void ARP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ARP_Character::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ARP_Character::MoveRight);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARP_Character::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ARP_Character::StopJumping);
 }
 
