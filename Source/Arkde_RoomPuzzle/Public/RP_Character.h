@@ -11,7 +11,13 @@ class ARKDE_ROOMPUZZLE_API ARP_Character : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
+	bool bIsLookInversion;
+
 public:
+
 	// Sets default values for this character's properties
 	ARP_Character();
 
@@ -36,4 +42,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void AddControllerPitchInput(float value) override;
 };
