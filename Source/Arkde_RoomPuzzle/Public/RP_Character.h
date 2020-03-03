@@ -6,10 +6,17 @@
 #include "GameFramework/Character.h"
 #include "RP_Character.generated.h"
 
+class UCameraComponent;
+
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Character : public ACharacter
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCameraComponent* FPSCameraComponent;
 
 protected:
 
