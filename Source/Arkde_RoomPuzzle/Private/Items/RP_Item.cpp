@@ -42,13 +42,13 @@ void ARP_Item::NotifyActorBeginOverlap(AActor * OtherActor)
 		ARP_Character* OverlappedCharacter = Cast<ARP_Character>(OtherActor);
 		if (IsValid(OverlappedCharacter))
 		{
-			Pickup();
+			Pickup(OverlappedCharacter);
 		}
 	}
 }
 
-void ARP_Item::Pickup()
+void ARP_Item::Pickup(ARP_Character* PickupCharacter)
 {
-	BP_Pickup();
+	BP_Pickup(PickupCharacter);
 }
 

@@ -79,3 +79,13 @@ void ARP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARP_Character::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ARP_Character::StopJumping);
 }
+
+void ARP_Character::AddKey(FName NewKey)
+{
+	DoorKeys.Add(NewKey);
+}
+
+bool ARP_Character::HasKey(FName KeyTag)
+{
+	return DoorKeys.Contains(KeyTag);
+}

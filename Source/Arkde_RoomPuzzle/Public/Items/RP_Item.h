@@ -7,6 +7,7 @@
 #include "RP_Item.generated.h"
 
 class USphereComponent;
+class ARP_Character;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Item : public AActor
@@ -28,10 +29,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void Pickup();
+	virtual void Pickup(ARP_Character* PickupCharacter);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Item")
-	void BP_Pickup();
+	void BP_Pickup(ARP_Character* PickupCharacter);
 
 public:	
 
