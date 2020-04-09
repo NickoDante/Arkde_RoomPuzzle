@@ -2,6 +2,7 @@
 
 
 #include "RP_Weapon.h"
+#include "GameFramework/Character.h"
 
 // Sets default values
 ARP_Weapon::ARP_Weapon()
@@ -34,5 +35,14 @@ void ARP_Weapon::StartAction()
 void ARP_Weapon::StopAction()
 {
 	BP_StopAction();
+}
+
+void ARP_Weapon::SetCharacterOwner(ACharacter * NewOwner)
+{
+	if (IsValid(NewOwner))
+	{
+		SetOwner(NewOwner);
+		CurrentOwnerCharacter = NewOwner;
+	}
 }
 

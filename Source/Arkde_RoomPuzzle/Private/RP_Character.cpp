@@ -77,7 +77,7 @@ void ARP_Character::CreateInitialWeapon()
 
 		if (IsValid(CurrentWeapon))
 		{
-			CurrentWeapon->SetOwner(this);
+			CurrentWeapon->SetCharacterOwner(this);
 			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
 	}
