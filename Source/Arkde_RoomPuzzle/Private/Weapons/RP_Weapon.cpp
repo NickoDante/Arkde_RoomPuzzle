@@ -2,7 +2,6 @@
 
 
 #include "RP_Weapon.h"
-#include "..\..\Public\Weapons\RP_Weapon.h"
 
 // Sets default values
 ARP_Weapon::ARP_Weapon()
