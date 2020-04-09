@@ -51,6 +51,8 @@ public:
 	// Sets default values for this character's properties
 	ARP_Character();
 
+	virtual FVector GetPawnViewLocation() const override;
+
 protected:
 
 	// Called when the game starts or when spawned

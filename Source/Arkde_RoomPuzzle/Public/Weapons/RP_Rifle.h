@@ -14,6 +14,18 @@ class ARKDE_ROOMPUZZLE_API ARP_Rifle : public ARP_Weapon
 {
 	GENERATED_BODY()
 	
+public:
+
+	ARP_Rifle();
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "LineTrace|Debug")
+	bool bDrawLineTrace;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "LineTrace")
+	float TraceLenght;
+
 protected:
 
 	virtual void StartAction() override;

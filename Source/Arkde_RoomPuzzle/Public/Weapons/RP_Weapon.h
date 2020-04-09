@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "RP_Weapon.generated.h"
 
+class UDamageType;
+
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Weapon : public AActor
 {
@@ -15,6 +17,14 @@ public:
 
 	// Sets default values for this actor's properties
 	ARP_Weapon();
+
+protected: 
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	float Damage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	TSubclassOf<UDamageType> DamageType;
 
 protected:
 

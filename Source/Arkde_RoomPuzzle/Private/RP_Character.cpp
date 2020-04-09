@@ -27,6 +27,21 @@ ARP_Character::ARP_Character()
 	TPSCameraComponent->SetupAttachment(SpringArmComponent);
 }
 
+FVector ARP_Character::GetPawnViewLocation() const
+{
+	if (IsValid(FPSCameraComponent) && bUseFirstPersonView)
+	{
+		return FPSCameraComponent->GetComponentLocation();
+	}
+
+	if (IsValid(TPSCameraComponent) && !bUseFirstPersonView)
+	{
+		return TPSCameraComponent->GetComponentLocation();
+	}
+
+	return Super::GetPawnViewLocation();
+}
+
 // Called when the game starts or when spawned
 void ARP_Character::BeginPlay()
 {
@@ -62,6 +77,7 @@ void ARP_Character::CreateInitialWeapon()
 
 		if (IsValid(CurrentWeapon))
 		{
+			CurrentWeapon->SetOwner(this);
 			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
 	}
