@@ -5,6 +5,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Weapons/RP_Weapon.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ARP_Character::ARP_Character()
@@ -14,6 +18,7 @@ ARP_Character::ARP_Character()
 
 	bUseFirstPersonView = true;
 	FPSCameraSocketName = "SCK_Camera";
+	MeleeSocketName = "SCK_Melee";
 
 	FPSCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_CameraComponent"));
 	FPSCameraComponent->bUsePawnControlRotation = true;
@@ -25,6 +30,11 @@ ARP_Character::ARP_Character()
 
 	TPSCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TPS_CameraComponent"));
 	TPSCameraComponent->SetupAttachment(SpringArmComponent);
+
+	MeleeDetectorComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("MeleeDetectorComponent"));
+	MeleeDetectorComponent->SetupAttachment(GetMesh(), MeleeSocketName);
+	MeleeDetectorComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+	MeleeDetectorComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
 FVector ARP_Character::GetPawnViewLocation() const
@@ -46,7 +56,16 @@ FVector ARP_Character::GetPawnViewLocation() const
 void ARP_Character::BeginPlay()
 {
 	Super::BeginPlay();
+	InitializeReferences();
 	CreateInitialWeapon();
+}
+
+void ARP_Character::InitializeReferences()
+{
+	if (IsValid(GetMesh()))
+	{
+		MyAnimInstance = GetMesh()->GetAnimInstance();
+	}
 }
 
 void ARP_Character::MoveForward(float value)
@@ -99,6 +118,19 @@ void ARP_Character::StopWeaponAction()
 	}
 }
 
+void ARP_Character::StartMelee()
+{
+	if (IsValid(MyAnimInstance) && IsValid(MeleeMontage))
+	{
+		MyAnimInstance->Montage_Play(MeleeMontage);
+	}
+}
+
+void ARP_Character::StopMelee()
+{
+
+}
+
 void ARP_Character::AddControllerPitchInput(float value)
 {
 	Super::AddControllerPitchInput(bIsLookInversion? -value : value);
@@ -127,6 +159,9 @@ void ARP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("WeaponAction", IE_Pressed, this, &ARP_Character::StartWeaponAction);
 	PlayerInputComponent->BindAction("WeaponAction", IE_Released, this, &ARP_Character::StopWeaponAction);
+
+	PlayerInputComponent->BindAction("Melee", IE_Pressed, this, &ARP_Character::StartMelee);
+	PlayerInputComponent->BindAction("Melee", IE_Released, this, &ARP_Character::StopMelee);
 }
 
 void ARP_Character::AddKey(FName NewKey)

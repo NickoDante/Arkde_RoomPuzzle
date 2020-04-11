@@ -9,6 +9,8 @@
 class USpringArmComponent;
 class UCameraComponent;
 class ARP_Weapon;
+class UAnimMontage;
+class UAnimInstance;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Character : public ACharacter
@@ -26,6 +28,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* TPSCameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCapsuleComponent* MeleeDetectorComponent;
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
@@ -34,8 +39,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
 	bool bIsLookInversion;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
 	FName FPSCameraSocketName;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Melee")
+	FName MeleeSocketName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Key")
 	TArray<FName> DoorKeys;
@@ -45,6 +53,11 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, Category = "Weapon")
 	ARP_Weapon* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
+	UAnimMontage* MeleeMontage;
+
+	UAnimInstance* MyAnimInstance;
 
 public:
 
@@ -57,6 +70,8 @@ protected:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void InitializeReferences();
 
 	void MoveForward(float value);
 
@@ -71,6 +86,10 @@ protected:
 	void StartWeaponAction();
 
 	void StopWeaponAction();
+
+	void StartMelee();
+
+	void StopMelee();
 
 public:	
 
