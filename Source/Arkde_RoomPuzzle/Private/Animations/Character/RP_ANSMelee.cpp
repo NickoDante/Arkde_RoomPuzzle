@@ -26,7 +26,6 @@ void URP_ANSMelee::NotifyEnd(USkeletalMeshComponent * MeshComp, UAnimSequenceBas
 		if (IsValid(Character))
 		{
 			Character->SetMeleeDetectorCollision(ECollisionEnabled::NoCollision);
-			Character->SetDoingMeleeState(false);
 		}
 	}
 }

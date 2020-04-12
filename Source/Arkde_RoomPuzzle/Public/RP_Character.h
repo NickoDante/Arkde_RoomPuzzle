@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Melee")
 	bool bIsDoingMelee;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	bool bCanUseWeapon;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee")
 	float MeleeDamage;
 
@@ -116,5 +119,5 @@ public:
 
 	void SetMeleeDetectorCollision(ECollisionEnabled::Type NewCollisionState);
 
-	void SetDoingMeleeState(bool NewDoingMeleeState);
+	void SetMeleeState(bool NewState);
 };
