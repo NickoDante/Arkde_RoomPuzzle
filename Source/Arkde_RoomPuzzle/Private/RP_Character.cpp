@@ -2,6 +2,7 @@
 
 
 #include "RP_Character.h"
+#include "Arkde_RoomPuzzle.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Weapons/RP_Weapon.h"
@@ -34,7 +35,7 @@ ARP_Character::ARP_Character()
 	MeleeDetectorComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("MeleeDetectorComponent"));
 	MeleeDetectorComponent->SetupAttachment(GetMesh(), MeleeSocketName);
 	MeleeDetectorComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-	MeleeDetectorComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	MeleeDetectorComponent->SetCollisionResponseToChannel(COLLISION_ENEMY, ECR_Overlap);
 }
 
 FVector ARP_Character::GetPawnViewLocation() const
