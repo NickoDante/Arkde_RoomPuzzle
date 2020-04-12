@@ -22,6 +22,8 @@ ARP_Character::ARP_Character()
 	FPSCameraSocketName = "SCK_Camera";
 	MeleeSocketName = "SCK_Melee";
 	MeleeDamage = 10.0f;
+	MaxComboMultiplier = 4.0f;
+	CurrentComboMultiplier = 1.0f;
 
 	FPSCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_CameraComponent"));
 	FPSCameraComponent->bUsePawnControlRotation = true;
@@ -135,9 +137,32 @@ void ARP_Character::StopWeaponAction()
 
 void ARP_Character::StartMelee()
 {
-	if (bIsDoingMelee)
+	if (bIsDoingMelee && !bCanMakeCombos)
 	{
 		return;
+	}
+
+	if (bCanMakeCombos)
+	{
+		if (bIsDoingMelee)
+		{
+			if (bIsComboEnable)
+			{
+				if (CurrentComboMultiplier < MaxComboMultiplier)
+				{
+					CurrentComboMultiplier++;
+					SetComboEnable(false);
+				}
+				else
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
+		}
 	}
 
 	if (IsValid(MyAnimInstance) && IsValid(MeleeMontage))
@@ -157,7 +182,7 @@ void ARP_Character::MakeMeleeDamage(UPrimitiveComponent * OverlappedComponent, A
 {
 	if (IsValid(OtherActor))
 	{
-		UGameplayStatics::ApplyPointDamage(OtherActor, MeleeDamage, SweepResult.Location, SweepResult, GetInstigatorController(), this, nullptr);
+		UGameplayStatics::ApplyPointDamage(OtherActor, MeleeDamage * CurrentComboMultiplier, SweepResult.Location, SweepResult, GetInstigatorController(), this, nullptr);
 	}
 }
 
@@ -213,4 +238,15 @@ void ARP_Character::SetMeleeState(bool NewState)
 {
 	bIsDoingMelee = NewState;
 	bCanUseWeapon = !NewState;
+}
+
+void ARP_Character::SetComboEnable(bool NewState)
+{
+	bIsComboEnable = NewState;
+}
+
+void ARP_Character::ResetCombo()
+{
+	SetComboEnable(false);
+	CurrentComboMultiplier = 1.0f;
 }

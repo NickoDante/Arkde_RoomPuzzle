@@ -46,7 +46,19 @@ protected:
 	bool bCanUseWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee")
+	bool bCanMakeCombos;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Melee")
+	bool bIsComboEnable;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee")
 	float MeleeDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee", meta = (EditCondition = bCanMakeCombos, ClampMin = 1.0, UIMin = 1.0))
+	float MaxComboMultiplier;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Melee", meta = (EditCondition = bCanMakeCombos, ClampMin = 1.0, UIMin = 1.0))
+	float CurrentComboMultiplier;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
 	FName FPSCameraSocketName;
@@ -120,4 +132,10 @@ public:
 	void SetMeleeDetectorCollision(ECollisionEnabled::Type NewCollisionState);
 
 	void SetMeleeState(bool NewState);
+
+	UFUNCTION(BlueprintCallable)
+	void SetComboEnable(bool NewState);
+
+	UFUNCTION(BlueprintCallable)
+	void ResetCombo();
 };
