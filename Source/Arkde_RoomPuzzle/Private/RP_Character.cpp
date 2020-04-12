@@ -24,6 +24,7 @@ ARP_Character::ARP_Character()
 	MeleeDamage = 10.0f;
 	MaxComboMultiplier = 4.0f;
 	CurrentComboMultiplier = 1.0f;
+	bCanUseWeapon = true;
 
 	FPSCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_CameraComponent"));
 	FPSCameraComponent->bUsePawnControlRotation = true;
