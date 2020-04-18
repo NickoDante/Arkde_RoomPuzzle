@@ -22,11 +22,11 @@ public:
 	void Victory(ARP_Character* Character);
 
 	UFUNCTION()
-	void GameOver();
+	void GameOver(ARP_Character* Character);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_Victory(ARP_Character* Character);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void BP_GameOver();
+	void BP_GameOver(ARP_Character* Character);
 };

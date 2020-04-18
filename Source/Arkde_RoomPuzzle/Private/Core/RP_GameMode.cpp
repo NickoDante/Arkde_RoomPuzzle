@@ -3,6 +3,8 @@
 
 #include "RP_GameMode.h"
 #include "RP_Character.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework\PawnMovementComponent.h"
 
 void ARP_GameMode::Victory(ARP_Character* Character)
 {
@@ -10,7 +12,13 @@ void ARP_GameMode::Victory(ARP_Character* Character)
 	BP_Victory(Character);
 }
 
-void ARP_GameMode::GameOver()
+void ARP_GameMode::GameOver(ARP_Character* Character)
 {
-	BP_GameOver();
+	Character->GetMovementComponent()->StopMovementImmediately();
+	Character->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	Character->DetachFromControllerPendingDestroy();
+	Character->SetLifeSpan(5.0f);
+
+	BP_GameOver(Character);
 }

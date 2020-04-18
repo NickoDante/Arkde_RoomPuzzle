@@ -11,6 +11,8 @@
 #include "Animation/AnimMontage.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/RP_HealthComponent.h"
+#include "Core/RP_GameMode.h"
 
 // Sets default values
 ARP_Character::ARP_Character()
@@ -42,6 +44,8 @@ ARP_Character::ARP_Character()
 	MeleeDetectorComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	MeleeDetectorComponent->SetCollisionResponseToChannel(COLLISION_ENEMY, ECR_Overlap);
 	MeleeDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	HealthComponent = CreateDefaultSubobject<URP_HealthComponent>(TEXT("HealthComponent"));
 }
 
 FVector ARP_Character::GetPawnViewLocation() const
@@ -66,6 +70,8 @@ void ARP_Character::BeginPlay()
 	InitializeReferences();
 	CreateInitialWeapon();
 	MeleeDetectorComponent->OnComponentBeginOverlap.AddDynamic(this, &ARP_Character::MakeMeleeDamage);
+
+	HealthComponent->OnHealthChangeDelegate.AddDynamic(this, &ARP_Character::OnHealthChange);
 }
 
 void ARP_Character::InitializeReferences()
@@ -74,6 +80,8 @@ void ARP_Character::InitializeReferences()
 	{
 		MyAnimInstance = GetMesh()->GetAnimInstance();
 	}
+
+	GameModeReference = Cast<ARP_GameMode>(GetWorld()->GetAuthGameMode());
 }
 
 void ARP_Character::MoveForward(float value)
@@ -184,6 +192,17 @@ void ARP_Character::MakeMeleeDamage(UPrimitiveComponent * OverlappedComponent, A
 	if (IsValid(OtherActor))
 	{
 		UGameplayStatics::ApplyPointDamage(OtherActor, MeleeDamage * CurrentComboMultiplier, SweepResult.Location, SweepResult, GetInstigatorController(), this, nullptr);
+	}
+}
+
+void ARP_Character::OnHealthChange(URP_HealthComponent * CurrentHealthComponent, AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser)
+{
+	if (HealthComponent->IsDead())
+	{
+		if (IsValid(GameModeReference))
+		{
+			GameModeReference->GameOver(this);
+		}
 	}
 }
 
