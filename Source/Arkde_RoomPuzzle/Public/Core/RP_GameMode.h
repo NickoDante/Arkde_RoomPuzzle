@@ -7,6 +7,7 @@
 #include "RP_GameMode.generated.h"
 
 class ARP_Character;
+class ARP_SpectatingCamera;
 
 /**
  * 
@@ -15,6 +16,26 @@ UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_GameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spectating Camera")
+	float SpectatingBlendTime;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
+	ARP_SpectatingCamera* VictoryCamera;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
+	ARP_SpectatingCamera* GameOverCamera;
+
+protected:
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	void SetupSpectatingCameras();
+
+	void MoveCameraToSpectatingPoint(ARP_Character* Character, ARP_SpectatingCamera* SpectatingCamera);
 
 public: 
 

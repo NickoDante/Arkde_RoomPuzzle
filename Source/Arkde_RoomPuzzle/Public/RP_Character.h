@@ -56,6 +56,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Melee")
 	bool bIsComboEnable;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Over")
+	bool bHasToDestroy;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee")
 	float MeleeDamage;
 
@@ -148,4 +151,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ResetCombo();
+
+	bool HasToDestroy() { return bHasToDestroy; };
 };
