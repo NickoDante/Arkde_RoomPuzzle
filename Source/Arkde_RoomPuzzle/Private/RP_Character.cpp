@@ -46,6 +46,11 @@ ARP_Character::ARP_Character()
 	MeleeDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	HealthComponent = CreateDefaultSubobject<URP_HealthComponent>(TEXT("HealthComponent"));
+
+	bUltimateWithTick = false;
+	MaxUltimateXP = 100.0f;
+	MaxUltimateDuration = 10.0f;
+	UltimateFrequency = 0.5f;
 }
 
 FVector ARP_Character::GetPawnViewLocation() const
@@ -187,6 +192,29 @@ void ARP_Character::StopMelee()
 
 }
 
+void ARP_Character::StartUltimate()
+{
+	if (bCanUseUltimate && !bIsUsingUltimate)
+	{
+		CurrentUltimateDuration = MaxUltimateDuration;
+
+		bCanUseUltimate = false;
+		bIsUsingUltimate = true;
+
+		if (!bUltimateWithTick)
+		{
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle_Ultimate, this, &ARP_Character::UpdateUltimateDurationWithTimer, UltimateFrequency, true);
+		}
+
+		BP_StartUltimate();
+	}
+}
+
+void ARP_Character::StopUltimate()
+{
+
+}
+
 void ARP_Character::MakeMeleeDamage(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	if (IsValid(OtherActor))
@@ -216,6 +244,10 @@ void ARP_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bUltimateWithTick && bIsUsingUltimate)
+	{
+		UpdateUltimateDuration(DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -237,6 +269,9 @@ void ARP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("Melee", IE_Pressed, this, &ARP_Character::StartMelee);
 	PlayerInputComponent->BindAction("Melee", IE_Released, this, &ARP_Character::StopMelee);
+
+	PlayerInputComponent->BindAction("Ultimate", IE_Pressed, this, &ARP_Character::StartUltimate);
+	PlayerInputComponent->BindAction("Ultimate", IE_Released, this, &ARP_Character::StopUltimate);
 }
 
 void ARP_Character::AddKey(FName NewKey)
@@ -269,4 +304,44 @@ void ARP_Character::ResetCombo()
 {
 	SetComboEnable(false);
 	CurrentComboMultiplier = 1.0f;
+}
+
+void ARP_Character::GainUltimateXP(float XPGained)
+{
+	if (bCanUseUltimate || bIsUsingUltimate)
+	{
+		return;
+	}
+
+	CurrentUltimateXP = FMath::Clamp(CurrentUltimateXP + XPGained, 0.0f, MaxUltimateXP);
+
+	if (CurrentUltimateXP == MaxUltimateXP)
+	{
+		bCanUseUltimate = true;
+	}
+
+	BP_GainUltimateXP(XPGained);
+}
+
+void ARP_Character::UpdateUltimateDuration(float Value)
+{
+	CurrentUltimateDuration = FMath::Clamp(CurrentUltimateDuration - Value, 0.0f, MaxUltimateDuration);
+	BP_UpdateUltimateDuration(Value);
+
+	if (CurrentUltimateDuration == 0.0f)
+	{
+		bIsUsingUltimate = false;
+
+		if (!bUltimateWithTick) 
+		{
+			GetWorld()->GetTimerManager().ClearTimer(TimerHandle_Ultimate);
+		}
+
+		BP_StopUltimate();
+	}
+}
+
+void ARP_Character::UpdateUltimateDurationWithTimer()
+{
+	UpdateUltimateDuration(UltimateFrequency);
 }
