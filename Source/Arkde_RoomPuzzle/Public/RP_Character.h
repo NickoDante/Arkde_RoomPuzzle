@@ -92,6 +92,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ultimate|Time")
 	float UltimateFrequency;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ultimate|Abilities", meta = (ClampMin = 0.0, UIMin = 0.0))
+	float UltimateWalkSpeed;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ultimate|Abilities")
+	float NormalWalkSpeed;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ultimate|Abilities", meta = (ClampMin = 0.0, UIMin = 0.0))
+	float UltimatePlayRate;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ultimate|Abilities")
+	float PlayRate;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ultimate|Abilities", meta = (ClampMin = 0.0, UIMin = 0.0))
+	float UltimateShotFrequency;
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Aiming")
 	FName FPSCameraSocketName;
 
@@ -110,11 +125,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	UAnimMontage* MeleeMontage;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
+	UAnimMontage* UltimateMontage;
+
 	UAnimInstance* MyAnimInstance;
 
 	ARP_GameMode* GameModeReference;
 
 	FTimerHandle TimerHandle_Ultimate;
+
+	FTimerHandle TimerHandle_AutomaticShoot;
+
+	FTimerHandle TimerHandle_BeginUltimateBehaviour;
 
 public:
 
@@ -190,6 +212,8 @@ public:
 	void UpdateUltimateDuration(float Value);
 
 	void UpdateUltimateDurationWithTimer();
+
+	void BeginUltimateBehaviour();
 
 protected:
 
