@@ -40,7 +40,7 @@ void ARP_Item::NotifyActorBeginOverlap(AActor * OtherActor)
 	if (IsValid(OtherActor))
 	{
 		ARP_Character* OverlappedCharacter = Cast<ARP_Character>(OtherActor);
-		if (IsValid(OverlappedCharacter))
+		if (IsValid(OverlappedCharacter) && OverlappedCharacter->GetCharacterType() == ERP_CharacterType::CharacterType_Player)
 		{
 			Pickup(OverlappedCharacter);
 		}

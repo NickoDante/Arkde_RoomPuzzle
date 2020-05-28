@@ -14,6 +14,13 @@ class UAnimInstance;
 class URP_HealthComponent;
 class ARP_GameMode;
 
+UENUM()
+enum class ERP_CharacterType : uint8
+{
+	CharacterType_Player		UMETA(DisplayName = "Player"),
+	CharacterType_Enemy			UMETA(DisplayName = "Enemy")
+};
+
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Character : public ACharacter
 {
@@ -116,6 +123,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Key")
 	TArray<FName> DoorKeys;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	ERP_CharacterType CharacterType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	TSubclassOf<ARP_Weapon> InitialWeaponClass;
 	
@@ -214,6 +224,9 @@ public:
 	void UpdateUltimateDurationWithTimer();
 
 	void BeginUltimateBehaviour();
+
+	UFUNCTION(BlueprintCallable)
+	ERP_CharacterType GetCharacterType() { return CharacterType; };
 
 protected:
 

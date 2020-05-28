@@ -37,7 +37,7 @@ void ARP_VictoryZone::NotifyActorBeginOverlap(AActor * OtherActor)
 	if (IsValid(OtherActor) && IsValid(GameModeReference))
 	{
 		ARP_Character* RPCharacter = Cast<ARP_Character>(OtherActor);
-		if (IsValid(RPCharacter))
+		if (IsValid(RPCharacter) && RPCharacter->GetCharacterType() == ERP_CharacterType::CharacterType_Player)
 		{
 			GameModeReference->Victory(RPCharacter);
 		}
