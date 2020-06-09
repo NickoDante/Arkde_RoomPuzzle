@@ -242,7 +242,26 @@ void ARP_Character::MakeMeleeDamage(UPrimitiveComponent * OverlappedComponent, A
 {
 	if (IsValid(OtherActor))
 	{
-		UGameplayStatics::ApplyPointDamage(OtherActor, MeleeDamage * CurrentComboMultiplier, SweepResult.Location, SweepResult, GetInstigatorController(), this, nullptr);
+		if (OtherActor == this)
+		{
+			return;
+		}
+
+		ARP_Character* MeleeTarget = Cast<ARP_Character>(OtherActor);
+		if (IsValid(MeleeTarget))
+		{
+			bool bPlayerAttackingEnemy = GetCharacterType() == ERP_CharacterType::CharacterType_Player && MeleeTarget->GetCharacterType() == ERP_CharacterType::CharacterType_Enemy;
+			bool bEnemyAttackingPlayer = GetCharacterType() == ERP_CharacterType::CharacterType_Enemy && MeleeTarget->GetCharacterType() == ERP_CharacterType::CharacterType_Player;
+
+			if (bPlayerAttackingEnemy || bEnemyAttackingPlayer)
+			{
+				UGameplayStatics::ApplyPointDamage(OtherActor, MeleeDamage * CurrentComboMultiplier, SweepResult.Location, SweepResult, GetInstigatorController(), this, nullptr);
+			}
+		}
+		else
+		{
+			UGameplayStatics::ApplyPointDamage(OtherActor, MeleeDamage * CurrentComboMultiplier, SweepResult.Location, SweepResult, GetInstigatorController(), this, nullptr);
+		}
 	}
 }
 

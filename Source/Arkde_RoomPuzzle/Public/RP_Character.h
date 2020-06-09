@@ -176,6 +176,7 @@ protected:
 
 	void StopWeaponAction();
 
+	UFUNCTION(BlueprintCallable)
 	void StartMelee();
 
 	void StopMelee();
