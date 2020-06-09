@@ -18,6 +18,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UBillboardComponent* PathBillboardComponent;
 
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Path", meta = (MakeEditWidget = true))
+	TArray<FVector> PathPoints;
+
 public:	
 
 	// Sets default values for this actor's properties
