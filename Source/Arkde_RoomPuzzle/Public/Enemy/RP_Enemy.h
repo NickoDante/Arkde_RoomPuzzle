@@ -22,6 +22,15 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
+	bool bLoopPath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
+	int DirectionIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
+	float WaitingTimeOnPathPoint;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Navigation Path")
 	ARP_PathActor* MyPath;
 	
