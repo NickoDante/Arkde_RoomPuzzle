@@ -7,6 +7,8 @@
 #include "NavigationSystem/Public/NavigationSystem.h"
 #include "NavigationSystem/Public/NavigationPath.h"
 #include "DrawDebugHelpers.h"
+#include "Components/RP_HealthComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 // Sets default values
 ARP_Bot::ARP_Bot()
@@ -18,6 +20,8 @@ ARP_Bot::ARP_Bot()
 	BotMeshComponent->SetCanEverAffectNavigation(false);
 	BotMeshComponent->SetSimulatePhysics(true);
 	RootComponent = BotMeshComponent;
+
+	HealthComponent = CreateDefaultSubobject<URP_HealthComponent>(TEXT("HealthComponent"));
 
 	MinDistanceToTarget = 100.0f;
 	ForceMagnitude = 500.0f;
@@ -33,6 +37,10 @@ void ARP_Bot::BeginPlay()
 	{
 		PlayerCharacter = Cast<ARP_Character>(PlayerPawn);
 	}
+
+	HealthComponent->OnHealthChangeDelegate.AddDynamic(this, &ARP_Bot::TakingDamage);
+
+	BotMaterial = BotMeshComponent->CreateAndSetMaterialInstanceDynamicFromMaterial(0, BotMeshComponent->GetMaterial(0));
 
 	NextPathPoint = GetNextPathPoint();
 }
@@ -52,6 +60,19 @@ FVector ARP_Bot::GetNextPathPoint()
 
 	// If Navigation points are less or equal than 1.
 	return GetActorLocation();
+}
+
+void ARP_Bot::TakingDamage(URP_HealthComponent * CurrentHealthComponent, AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser)
+{
+	if (IsValid(BotMaterial))
+	{
+		BotMaterial->SetScalarParameterValue("Pulse", GetWorld()->TimeSeconds);
+	}
+
+	if (CurrentHealthComponent->IsDead())
+	{
+		Destroy();
+	}
 }
 
 // Called every frame

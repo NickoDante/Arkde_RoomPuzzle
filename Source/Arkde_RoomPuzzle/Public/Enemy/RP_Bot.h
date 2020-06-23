@@ -8,6 +8,7 @@
 
 class UStaticMeshComponent;
 class ARP_Character;
+class URP_HealthComponent;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Bot : public APawn
@@ -18,6 +19,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* BotMeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	URP_HealthComponent* HealthComponent;
 
 protected:
 	
@@ -33,6 +37,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "References")
 	ARP_Character* PlayerCharacter;
 
+	UMaterialInstanceDynamic* BotMaterial;
+
 public:
 
 	// Sets default values for this pawn's properties
@@ -45,6 +51,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Navigation")
 	FVector GetNextPathPoint();
+
+	UFUNCTION()
+	void TakingDamage(URP_HealthComponent* CurrentHealthComponent, AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser);
 
 public:	
 
