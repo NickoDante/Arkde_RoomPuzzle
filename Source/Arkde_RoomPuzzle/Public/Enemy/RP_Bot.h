@@ -9,6 +9,8 @@
 class UStaticMeshComponent;
 class ARP_Character;
 class URP_HealthComponent;
+class USphereComponent;
+class UParticleSystem;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Bot : public APawn
@@ -21,15 +23,33 @@ public:
 	UStaticMeshComponent* BotMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USphereComponent* SelfDestructionDetectorComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URP_HealthComponent* HealthComponent;
 
 protected:
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Debug")
+	bool bDebug;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Bot Self Destruction")
+	bool bIsExploded;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Bot Self Destruction")
+	bool bIsStartingCountdown;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bot Movement")
 	float MinDistanceToTarget;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bot Movement")
 	float ForceMagnitude;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bot Effect")
+	float ExplosionDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bot Effect")
+	float ExplosionRadius;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Bot")
 	FVector NextPathPoint;
@@ -38,6 +58,11 @@ protected:
 	ARP_Character* PlayerCharacter;
 
 	UMaterialInstanceDynamic* BotMaterial;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bot Effect")
+	UParticleSystem* ExplosionEffect;
+
+	FTimerHandle TimerHandle_SelfDamage;
 
 public:
 
@@ -54,6 +79,13 @@ protected:
 
 	UFUNCTION()
 	void TakingDamage(URP_HealthComponent* CurrentHealthComponent, AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser);
+
+	void SelfDestruction();
+
+	UFUNCTION()
+	void StartCountDown(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	void SelfDamage();
 
 public:	
 
