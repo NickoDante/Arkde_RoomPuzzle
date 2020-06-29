@@ -51,6 +51,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bot Effect")
 	float ExplosionRadius;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bot Ultimate XP")
+	float XPValue;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Bot")
 	FVector NextPathPoint;
 
@@ -86,6 +89,12 @@ protected:
 	void StartCountDown(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 	void SelfDamage();
+
+	UFUNCTION()
+	void GiveXP(AActor* DamageCauser);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_GiveXP(AActor* DamageCauser);
 
 public:	
 

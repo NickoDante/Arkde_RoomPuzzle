@@ -30,8 +30,23 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
 	float WaitingTimeOnPathPoint;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Ultimate XP")
+	float XPValue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Navigation Path")
 	ARP_PathActor* MyPath;
-	
+
+protected:
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+protected:
+
+	UFUNCTION()
+	void GiveXP(AActor* DamageCauser);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_GiveXP(AActor* DamageCauser);
 };

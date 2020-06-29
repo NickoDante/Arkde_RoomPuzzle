@@ -11,6 +11,8 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystem.h"
+#include "Components/RP_HealthComponent.h"
+#include "Weapons/RP_Rifle.h"
 
 // Sets default values
 ARP_Bot::ARP_Bot()
@@ -36,6 +38,8 @@ ARP_Bot::ARP_Bot()
 
 	ExplosionDamage = 100.0f;
 	ExplosionRadius = 100.0f;
+
+	XPValue = 10.0f;
 }
 
 // Called when the game starts or when spawned
@@ -50,6 +54,8 @@ void ARP_Bot::BeginPlay()
 	}
 
 	HealthComponent->OnHealthChangeDelegate.AddDynamic(this, &ARP_Bot::TakingDamage);
+	HealthComponent->OnDeadDelegate.AddDynamic(this, &ARP_Bot::GiveXP);
+
 	SelfDestructionDetectorComponent->OnComponentBeginOverlap.AddDynamic(this, &ARP_Bot::StartCountDown);
 
 	BotMaterial = BotMeshComponent->CreateAndSetMaterialInstanceDynamicFromMaterial(0, BotMeshComponent->GetMaterial(0));
@@ -133,6 +139,27 @@ void ARP_Bot::StartCountDown(UPrimitiveComponent* OverlappedComponent, AActor* O
 void ARP_Bot::SelfDamage()
 {
 	UGameplayStatics::ApplyDamage(this, 20.0f, GetInstigatorController(), nullptr, nullptr);
+}
+
+void ARP_Bot::GiveXP(AActor* DamageCauser)
+{
+	ARP_Character* PossiblePlayer = Cast<ARP_Character>(DamageCauser);
+	if (IsValid(PossiblePlayer) && PossiblePlayer->GetCharacterType() == ERP_CharacterType::CharacterType_Player)
+	{
+		PossiblePlayer->GainUltimateXP(XPValue);
+	}
+
+	ARP_Rifle* PossibleRifle = Cast<ARP_Rifle>(DamageCauser);
+	if (IsValid(PossibleRifle))
+	{
+		ARP_Character* RifleOwner = Cast<ARP_Character>(PossibleRifle->GetOwner());
+		if (IsValid(RifleOwner) && RifleOwner->GetCharacterType() == ERP_CharacterType::CharacterType_Player)
+		{
+			RifleOwner->GainUltimateXP(XPValue);
+		}
+	}
+
+	BP_GiveXP(DamageCauser);
 }
 
 // Called every frame

@@ -7,6 +7,7 @@
 #include "RP_HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChangeSignature, URP_HealthComponent*, HealthComponent, AActor *, DamagedActor, float, Damage, const UDamageType *, DamageType, AController *, InstigatedBy, AActor *, DamageCauser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadSignature, AActor*, DamageCauser);
 
 UCLASS( ClassGroup=(ROOM), meta=(BlueprintSpawnableComponent) )
 class ARKDE_ROOMPUZZLE_API URP_HealthComponent : public UActorComponent
@@ -34,6 +35,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChangeSignature OnHealthChangeDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnDeadSignature OnDeadDelegate;
 
 public:	
 

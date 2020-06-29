@@ -39,6 +39,7 @@ void URP_HealthComponent::TakingDamage(AActor * DamagedActor, float Damage, cons
 	if (Health == 0.0f)
 	{
 		bIsDead = true;
+		OnDeadDelegate.Broadcast(DamageCauser);
 	}
 
 	OnHealthChangeDelegate.Broadcast(this, DamagedActor, Damage, DamageType, InstigatedBy, DamageCauser);
