@@ -13,6 +13,7 @@
 #include "Particles/ParticleSystem.h"
 #include "Components/RP_HealthComponent.h"
 #include "Weapons/RP_Rifle.h"
+#include "Items/RP_Item.h"
 
 // Sets default values
 ARP_Bot::ARP_Bot()
@@ -40,6 +41,7 @@ ARP_Bot::ARP_Bot()
 	ExplosionRadius = 100.0f;
 
 	XPValue = 10.0f;
+	LootProbability = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -89,6 +91,19 @@ void ARP_Bot::TakingDamage(URP_HealthComponent * CurrentHealthComponent, AActor 
 
 	if (CurrentHealthComponent->IsDead())
 	{
+		if (IsValid(DamageCauser))
+		{
+			ARP_Rifle* Rifle = Cast<ARP_Rifle>(DamageCauser);
+			if (IsValid(Rifle))
+			{
+				ARP_Character* RifleOwner = Cast<ARP_Character>(Rifle->GetOwner());
+				if (IsValid(RifleOwner) && RifleOwner->GetCharacterType() == ERP_CharacterType::CharacterType_Player)
+				{
+					TrySpawnLoot();
+				}
+			}
+		}
+
 		SelfDestruction();
 	}
 }
@@ -160,6 +175,25 @@ void ARP_Bot::GiveXP(AActor* DamageCauser)
 	}
 
 	BP_GiveXP(DamageCauser);
+}
+
+bool ARP_Bot::TrySpawnLoot()
+{
+	if (!IsValid(LootItemClass))
+	{
+		return false;
+	}
+
+	float SelectedProbability = FMath::RandRange(0.0f, 100.0f);
+	if (SelectedProbability <= LootProbability)
+	{
+		FActorSpawnParameters SpawnParameter;
+		SpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		GetWorld()->SpawnActor<ARP_Item>(LootItemClass, GetActorLocation(), FRotator::ZeroRotator, SpawnParameter);
+	}
+
+	return true;
 }
 
 // Called every frame

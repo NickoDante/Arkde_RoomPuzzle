@@ -47,6 +47,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsDead() const { return bIsDead; };
 
+	bool TryAddHealth(float HealthToAdd);
+
 protected:
 
 	// Called when the game starts

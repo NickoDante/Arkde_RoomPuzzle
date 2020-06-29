@@ -7,6 +7,7 @@
 #include "RP_Enemy.generated.h"
 
 class ARP_PathActor;
+class ARP_Item;
 
 /**
  * 
@@ -34,8 +35,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Ultimate XP")
 	float XPValue;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loot System")
+	float LootProbability;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Navigation Path")
 	ARP_PathActor* MyPath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loot System")
+	TSubclassOf<ARP_Item> LootItemClass;
 
 protected:
 
@@ -49,4 +56,6 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_GiveXP(AActor* DamageCauser);
+
+	bool TrySpawnLoot();
 };

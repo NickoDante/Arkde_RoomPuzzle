@@ -49,3 +49,25 @@ void URP_HealthComponent::TakingDamage(AActor * DamagedActor, float Damage, cons
 		UE_LOG(LogTemp, Log, TEXT("My Health is: %s"), *FString::SanitizeFloat(Health));
 	}
 }
+
+bool URP_HealthComponent::TryAddHealth(float HealthToAdd)
+{
+	if (bIsDead)
+	{
+		return false;
+	}
+
+	if (Health == MaxHealth)
+	{
+		return false;
+	}
+
+	Health = FMath::Clamp(Health + HealthToAdd, 0.0f, MaxHealth);
+
+	if (bDebug)
+	{
+		UE_LOG(LogTemp, Log, TEXT("My Health is: %s"), *FString::SanitizeFloat(Health));
+	}
+
+	return true;
+}

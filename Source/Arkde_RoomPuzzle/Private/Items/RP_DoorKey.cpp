@@ -20,6 +20,5 @@ void ARP_DoorKey::Pickup(ARP_Character* PickupCharacter)
 	Super::Pickup(PickupCharacter);
 
 	PickupCharacter->AddKey(KeyTag);
-	PickupCharacter->GainUltimateXP(XPValue);
 	Destroy();
 }
