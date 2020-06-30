@@ -12,6 +12,7 @@ class URP_HealthComponent;
 class USphereComponent;
 class UParticleSystem;
 class ARP_Item;
+class ARP_BotSpawner;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Bot : public APawn
@@ -72,6 +73,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loot System")
 	TSubclassOf<ARP_Item> LootItemClass;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Spawner")
+	ARP_BotSpawner* MySpawner;
+
 	FTimerHandle TimerHandle_SelfDamage;
 
 public:
@@ -109,4 +113,6 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void SetSpawner(ARP_BotSpawner* NewSpawner) { MySpawner = NewSpawner; };
 };

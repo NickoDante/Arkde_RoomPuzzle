@@ -14,6 +14,7 @@
 #include "Components/RP_HealthComponent.h"
 #include "Weapons/RP_Rifle.h"
 #include "Items/RP_Item.h"
+#include "Enemy/RP_BotSpawner.h"
 
 // Sets default values
 ARP_Bot::ARP_Bot()
@@ -130,6 +131,11 @@ void ARP_Bot::SelfDestruction()
 	if (bDebug)
 	{
 		DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 20, FColor::Red, true, 5.0f, 0, 2.0f);
+	}
+
+	if (IsValid(MySpawner))
+	{
+		MySpawner->NotifyBotDead();
 	}
 
 	Destroy();
