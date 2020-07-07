@@ -57,6 +57,8 @@ ARP_Character::ARP_Character()
 	UltimatePlayRate = 2.0f;
 	PlayRate = 1.0f;
 	UltimateShotFrequency = 0.25f;
+
+	MainMenuMapName = "MainMenuMap";
 }
 
 FVector ARP_Character::GetPawnViewLocation() const
@@ -238,6 +240,11 @@ void ARP_Character::StopUltimate()
 
 }
 
+void ARP_Character::GoToMainMenu()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), MainMenuMapName);
+}
+
 void ARP_Character::MakeMeleeDamage(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	if (IsValid(OtherActor))
@@ -314,6 +321,8 @@ void ARP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("Ultimate", IE_Pressed, this, &ARP_Character::StartUltimate);
 	PlayerInputComponent->BindAction("Ultimate", IE_Released, this, &ARP_Character::StopUltimate);
+
+	PlayerInputComponent->BindAction("Exit", IE_Pressed, this, &ARP_Character::GoToMainMenu);
 }
 
 void ARP_Character::AddKey(FName NewKey)
