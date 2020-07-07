@@ -13,6 +13,7 @@ class USphereComponent;
 class UParticleSystem;
 class ARP_Item;
 class ARP_BotSpawner;
+class URP_GameInstance;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Bot : public APawn
@@ -75,6 +76,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Spawner")
 	ARP_BotSpawner* MySpawner;
+
+	URP_GameInstance* GameInstanceReference;
 
 	FTimerHandle TimerHandle_SelfDamage;
 

@@ -13,6 +13,7 @@ class UAnimMontage;
 class UAnimInstance;
 class URP_HealthComponent;
 class ARP_GameMode;
+class URP_GameInstance;
 
 UENUM()
 enum class ERP_CharacterType : uint8
@@ -144,6 +145,8 @@ protected:
 	UAnimInstance* MyAnimInstance;
 
 	ARP_GameMode* GameModeReference;
+
+	URP_GameInstance* GameInstanceReference;
 
 	FTimerHandle TimerHandle_Ultimate;
 

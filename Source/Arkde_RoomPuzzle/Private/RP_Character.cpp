@@ -14,6 +14,7 @@
 #include "Components/RP_HealthComponent.h"
 #include "Core/RP_GameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Core/RP_GameInstance.h"
 
 // Sets default values
 ARP_Character::ARP_Character()
@@ -97,6 +98,8 @@ void ARP_Character::InitializeReferences()
 	}
 
 	GameModeReference = Cast<ARP_GameMode>(GetWorld()->GetAuthGameMode());
+
+	GameInstanceReference = Cast<URP_GameInstance>(GetWorld()->GetGameInstance());
 }
 
 void ARP_Character::MoveForward(float value)

@@ -8,6 +8,7 @@
 #include "Items/RP_Item.h"
 #include "AIModule/Classes/Perception/AISense_Damage.h"
 #include "Enemy/Controller/RP_AIController.h"
+#include "Core/RP_GameInstance.h"
 
 ARP_Enemy::ARP_Enemy()
 {
@@ -83,6 +84,11 @@ void ARP_Enemy::HealthChanged(URP_HealthComponent* CurrentHealthComponent, AActo
 	if (CurrentHealthComponent->IsDead())
 	{
 		MyAIController->UnPossess();
+
+		if (IsValid(GameInstanceReference))
+		{
+			GameInstanceReference->AddEnemyDefeatedToCounter();
+		}
 	}
 	else
 	{
