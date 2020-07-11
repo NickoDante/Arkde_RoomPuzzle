@@ -245,6 +245,11 @@ void ARP_Character::StopUltimate()
 
 void ARP_Character::GoToMainMenu()
 {
+	if (IsValid(GameInstanceReference))
+	{
+		GameInstanceReference->SaveData();
+	}
+
 	UGameplayStatics::OpenLevel(GetWorld(), MainMenuMapName);
 }
 

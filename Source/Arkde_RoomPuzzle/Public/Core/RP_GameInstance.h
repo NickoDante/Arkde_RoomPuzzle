@@ -14,7 +14,14 @@ class ARKDE_ROOMPUZZLE_API URP_GameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
+public: 
+
+	URP_GameInstance();
+
 protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Save System")
+	FString SaveSlotName;
 
 	UPROPERTY(VisibleAnywhere, Category = "Enemy Data")
 	int EnemiesDefeatedCounter;
@@ -30,8 +37,26 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddEnemyDefeatedToCounter();
 
+	UFUNCTION(BlueprintCallable)
+	void SaveData();
+
+	UFUNCTION(BlueprintCallable)
+	void LoadData();
+
+	UFUNCTION(BlueprintCallable)
+	void ResetData();
+
 protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_AddEnemyDefeatedToCounter();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_SaveData();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_LoadData();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ResetData();
 };
