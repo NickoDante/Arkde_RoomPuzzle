@@ -15,6 +15,9 @@ class URP_HealthComponent;
 class ARP_GameMode;
 class URP_GameInstance;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUltimateUpdateSignature, float, CurrentUltimateXP, float, MaxUltimateXP);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUltimateStatusSignature, bool, bIsAvailable);
+
 UENUM()
 enum class ERP_CharacterType : uint8
 {
@@ -153,6 +156,14 @@ protected:
 	FTimerHandle TimerHandle_AutomaticShoot;
 
 	FTimerHandle TimerHandle_BeginUltimateBehaviour;
+
+public:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUltimateUpdateSignature OnUltimateUpdateDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUltimateStatusSignature OnUltimateStatusDelegate;
 
 public:
 
