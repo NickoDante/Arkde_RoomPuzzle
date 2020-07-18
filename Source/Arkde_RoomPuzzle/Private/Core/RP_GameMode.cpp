@@ -8,6 +8,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "RP_SpectatingCamera.h"
 
+ARP_GameMode::ARP_GameMode()
+{
+	MainMenuMapName = "MainMenuMap";
+}
+
 void ARP_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -74,6 +79,9 @@ void ARP_GameMode::Victory(ARP_Character* Character)
 	Character->DisableInput(nullptr);
 
 	MoveCameraToSpectatingPoint(Character, VictoryCamera);
+	OnVictoryDelegate.Broadcast();
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &ARP_GameMode::BackToMainMenu, 3.0f, false);
 
 	BP_Victory(Character);
 }
@@ -94,5 +102,14 @@ void ARP_GameMode::GameOver(ARP_Character* Character)
 		MoveCameraToSpectatingPoint(Character, GameOverCamera);
 	}
 
+	OnGameOverDelegate.Broadcast();
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &ARP_GameMode::BackToMainMenu, 3.0f, false);
+
 	BP_GameOver(Character);
+}
+
+void ARP_GameMode::BackToMainMenu()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), MainMenuMapName);
 }
