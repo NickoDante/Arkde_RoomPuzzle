@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class ARP_Character;
+class ARP_GameMode;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Item : public AActor
@@ -18,6 +19,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* MainColliderComponent;
+
+protected:
+
+	UPROPERTY(BlueprintReadOnly)
+	ARP_GameMode* GameModeReference;
 
 public:	
 

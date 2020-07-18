@@ -4,6 +4,7 @@
 #include "RP_DoorKey.h"
 #include "Components/StaticMeshComponent.h"
 #include "RP_Character.h"
+#include "Core/RP_GameMode.h"
 
 ARP_DoorKey::ARP_DoorKey()
 {
@@ -19,6 +20,13 @@ void ARP_DoorKey::Pickup(ARP_Character* PickupCharacter)
 {
 	Super::Pickup(PickupCharacter);
 
-	PickupCharacter->AddKey(KeyTag);
-	Destroy();
+	if (IsValid(PickupCharacter) && PickupCharacter->GetCharacterType() == ERP_CharacterType::CharacterType_Player)
+	{
+		if (IsValid(GameModeReference))
+		{
+			GameModeReference->AddKeyToCharacter(PickupCharacter, KeyTag);
+		}
+
+		Destroy();
+	}
 }

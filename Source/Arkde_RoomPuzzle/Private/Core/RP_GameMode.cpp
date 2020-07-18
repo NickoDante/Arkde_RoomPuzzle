@@ -60,6 +60,15 @@ void ARP_GameMode::MoveCameraToSpectatingPoint(ARP_Character* Character, ARP_Spe
 	}
 }
 
+void ARP_GameMode::AddKeyToCharacter(ARP_Character* KeyOwner, FName KeyTag)
+{
+	if (IsValid(KeyOwner))
+	{
+		OnKeyAddedDelegate.Broadcast(KeyTag);
+		KeyOwner->AddKey(KeyTag);
+	}
+}
+
 void ARP_GameMode::Victory(ARP_Character* Character)
 {
 	Character->DisableInput(nullptr);
