@@ -16,6 +16,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Core/RP_GameInstance.h"
 #include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 ARP_Character::ARP_Character()
@@ -52,6 +53,9 @@ ARP_Character::ARP_Character()
 
 	StepSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("StepSoundComponent"));
 	StepSoundComponent->SetupAttachment(RootComponent);
+
+	VoiceSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("VoiceSoundComponent"));
+	VoiceSoundComponent->SetupAttachment(RootComponent);
 
 	bUltimateWithTick = false;
 	MaxUltimateXP = 100.0f;
@@ -227,6 +231,8 @@ void ARP_Character::StartUltimate()
 
 		bCanUseUltimate = false;
 
+		PlayVoiceSound(UltimateSound);
+
 		if (IsValid(MyAnimInstance) && IsValid(UltimateMontage))
 		{
 			GetCharacterMovement()->MaxWalkSpeed = 0.0f;
@@ -286,8 +292,15 @@ void ARP_Character::MakeMeleeDamage(UPrimitiveComponent * OverlappedComponent, A
 
 void ARP_Character::OnHealthChange(URP_HealthComponent * CurrentHealthComponent, AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser)
 {
+	if (!HealthComponent->IsDead())
+	{
+		PlayVoiceSound(HurtSound);
+	}
+
 	if (HealthComponent->IsDead() && GetCharacterType() == ERP_CharacterType::CharacterType_Player)
 	{
+		PlayVoiceSound(DeadSound);
+
 		if (IsValid(GameModeReference))
 		{
 			GameModeReference->GameOver(this);
@@ -438,4 +451,15 @@ void ARP_Character::BeginUltimateBehaviour()
 void ARP_Character::PlayStepSound()
 {
 	StepSoundComponent->Play();
+}
+
+void ARP_Character::PlayVoiceSound(USoundCue* VoiceSound)
+{
+	if (!IsValid(VoiceSound))
+	{
+		return;
+	}
+
+	VoiceSoundComponent->SetSound(VoiceSound);
+	VoiceSoundComponent->Play();
 }

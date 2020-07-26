@@ -15,6 +15,7 @@ class URP_HealthComponent;
 class ARP_GameMode;
 class URP_GameInstance;
 class UAudioComponent;
+class USoundCue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUltimateUpdateSignature, float, CurrentUltimateXP, float, MaxUltimateXP);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUltimateStatusSignature, bool, bIsAvailable);
@@ -50,6 +51,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAudioComponent* StepSoundComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* VoiceSoundComponent;
 
 protected:
 
@@ -161,6 +165,15 @@ protected:
 
 	FTimerHandle TimerHandle_BeginUltimateBehaviour;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* HurtSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* DeadSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* UltimateSound;
+
 public:
 
 	UPROPERTY(BlueprintAssignable)
@@ -257,6 +270,8 @@ public:
 	URP_HealthComponent* GetHealthComponent() { return HealthComponent; };
 
 	void PlayStepSound();
+
+	void PlayVoiceSound(USoundCue* VoiceSound);
 
 protected:
 
