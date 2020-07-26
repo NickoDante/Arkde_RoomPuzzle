@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "RP_SpectatingCamera.h"
 #include "Sound/SoundCue.h"
+#include "Enemy/RP_Enemy.h"
 
 ARP_GameMode::ARP_GameMode()
 {
@@ -18,6 +19,22 @@ void ARP_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	SetupSpectatingCameras();
+
+	TArray<AActor*> EnemyActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARP_Enemy::StaticClass(), EnemyActors);
+	for (AActor* EnemyActor : EnemyActors)
+	{
+		if (!IsValid(EnemyActor))
+		{
+			continue;
+		}
+
+		ARP_Enemy* NewEnemy = Cast<ARP_Enemy>(EnemyActor);
+		if (IsValid(NewEnemy))
+		{
+			LevelEnemies.AddUnique(NewEnemy);
+		}
+	}
 }
 
 void ARP_GameMode::SetupSpectatingCameras()
@@ -127,4 +144,29 @@ void ARP_GameMode::GameOver(ARP_Character* Character)
 void ARP_GameMode::BackToMainMenu()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), MainMenuMapName);
+}
+
+void ARP_GameMode::CheckAlertMode()
+{
+	bool bEnemyInAlertMode = false;
+
+	for (ARP_Enemy* EnemyOnLevel : LevelEnemies)
+	{
+		if (!IsValid(EnemyOnLevel))
+		{
+			continue;
+		}
+
+		if (EnemyOnLevel->IsAlert())
+		{
+			bEnemyInAlertMode = true;
+			break;
+		}
+	}
+
+	if (bIsAlertMode != bEnemyInAlertMode)
+	{
+		bIsAlertMode = bEnemyInAlertMode;
+		OnAlertModeChangeDelegate.Broadcast(bIsAlertMode);
+	}
 }

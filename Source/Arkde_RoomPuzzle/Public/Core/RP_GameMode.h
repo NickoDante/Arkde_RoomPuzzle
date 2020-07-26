@@ -9,9 +9,11 @@
 class ARP_Character;
 class ARP_SpectatingCamera;
 class USoundCue;
+class ARP_Enemy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyAddedSignature, FName, KeyTag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameStateChange);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAlertModeChangeSignature, bool, bIsAlert);
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_GameMode : public AGameModeBase
@@ -19,6 +21,9 @@ class ARKDE_ROOMPUZZLE_API ARP_GameMode : public AGameModeBase
 	GENERATED_BODY()
 
 protected:
+
+	UPROPERTY(BlueprintReadOnly, Category = "Level")
+	bool bIsAlertMode;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spectating Camera")
 	float SpectatingBlendTime;
@@ -38,6 +43,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Music")
 	USoundCue* GameOverMusic;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Level")
+	TArray<ARP_Enemy*> LevelEnemies;
+
 	FTimerHandle TimerHandle_BackToMainMenu;
 
 public:
@@ -52,6 +60,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStateChange OnGameOverDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAlertModeChangeSignature OnAlertModeChangeDelegate;
 
 protected:
 
@@ -76,6 +87,8 @@ public:
 	void GameOver(ARP_Character* Character);
 
 	void BackToMainMenu();
+
+	void CheckAlertMode();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_Victory(ARP_Character* Character);

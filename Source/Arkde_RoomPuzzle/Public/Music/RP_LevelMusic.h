@@ -24,6 +24,9 @@ protected:
 	UAudioComponent* MusicAudioComponent;
 
 protected:
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Music")
+	FName AlertParamName;
 
 	UPROPERTY(BlueprintReadOnly, Category = "References")
 	ARP_GameMode* GameModeReference;
@@ -40,4 +43,7 @@ protected:
 
 	UFUNCTION()
 	void StopLevelMusic();
+
+	UFUNCTION()
+	void ChangeLevelMusic(bool bIsAlert);
 };
