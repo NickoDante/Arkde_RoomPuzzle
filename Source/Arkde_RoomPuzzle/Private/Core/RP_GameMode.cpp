@@ -7,6 +7,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "RP_SpectatingCamera.h"
+#include "Sound/SoundCue.h"
 
 ARP_GameMode::ARP_GameMode()
 {
@@ -65,6 +66,16 @@ void ARP_GameMode::MoveCameraToSpectatingPoint(ARP_Character* Character, ARP_Spe
 	}
 }
 
+void ARP_GameMode::PlayMusic(USoundCue* MusicCue)
+{
+	if (!IsValid(MusicCue))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySound2D(GetWorld(), MusicCue);
+}
+
 void ARP_GameMode::AddKeyToCharacter(ARP_Character* KeyOwner, FName KeyTag)
 {
 	if (IsValid(KeyOwner))
@@ -80,6 +91,8 @@ void ARP_GameMode::Victory(ARP_Character* Character)
 
 	MoveCameraToSpectatingPoint(Character, VictoryCamera);
 	OnVictoryDelegate.Broadcast();
+
+	PlayMusic(VictoryMusic);
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &ARP_GameMode::BackToMainMenu, 3.0f, false);
 
@@ -104,7 +117,9 @@ void ARP_GameMode::GameOver(ARP_Character* Character)
 
 	OnGameOverDelegate.Broadcast();
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &ARP_GameMode::BackToMainMenu, 3.0f, false);
+	PlayMusic(GameOverMusic);
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &ARP_GameMode::BackToMainMenu, 8.0f, false);
 
 	BP_GameOver(Character);
 }

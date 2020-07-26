@@ -8,6 +8,7 @@
 
 class ARP_Character;
 class ARP_SpectatingCamera;
+class USoundCue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyAddedSignature, FName, KeyTag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameStateChange);
@@ -30,6 +31,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
 	ARP_SpectatingCamera* GameOverCamera;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Music")
+	USoundCue* VictoryMusic;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Music")
+	USoundCue* GameOverMusic;
 
 	FTimerHandle TimerHandle_BackToMainMenu;
 
@@ -54,6 +61,8 @@ protected:
 	void SetupSpectatingCameras();
 
 	void MoveCameraToSpectatingPoint(ARP_Character* Character, ARP_SpectatingCamera* SpectatingCamera);
+
+	void PlayMusic(USoundCue* MusicCue);
 
 public: 
 
