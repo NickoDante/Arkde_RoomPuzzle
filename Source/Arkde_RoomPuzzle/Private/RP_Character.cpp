@@ -297,13 +297,16 @@ void ARP_Character::OnHealthChange(URP_HealthComponent * CurrentHealthComponent,
 		PlayVoiceSound(HurtSound);
 	}
 
-	if (HealthComponent->IsDead() && GetCharacterType() == ERP_CharacterType::CharacterType_Player)
+	if (HealthComponent->IsDead())
 	{
 		PlayVoiceSound(DeadSound);
 
-		if (IsValid(GameModeReference))
+		if (GetCharacterType() == ERP_CharacterType::CharacterType_Player)
 		{
-			GameModeReference->GameOver(this);
+			if (IsValid(GameModeReference))
+			{
+				GameModeReference->GameOver(this);
+			}
 		}
 	}
 }

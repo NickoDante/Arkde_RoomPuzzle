@@ -14,6 +14,8 @@ class UParticleSystem;
 class ARP_Item;
 class ARP_BotSpawner;
 class URP_GameInstance;
+class UAudioComponent;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ROOMPUZZLE_API ARP_Bot : public APawn
@@ -30,6 +32,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URP_HealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* TimerSoundComponent;
 
 protected:
 	
@@ -81,6 +86,9 @@ protected:
 
 	FTimerHandle TimerHandle_SelfDamage;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* ExplosionSound;
+
 public:
 
 	// Sets default values for this pawn's properties
@@ -111,6 +119,10 @@ protected:
 	void BP_GiveXP(AActor* DamageCauser);
 
 	bool TrySpawnLoot();
+
+	void PlayTimerSound();
+
+	void PlayExplosionSound();
 
 public:	
 
