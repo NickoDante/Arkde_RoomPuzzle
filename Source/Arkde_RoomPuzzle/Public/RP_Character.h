@@ -14,6 +14,7 @@ class UAnimInstance;
 class URP_HealthComponent;
 class ARP_GameMode;
 class URP_GameInstance;
+class UAudioComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUltimateUpdateSignature, float, CurrentUltimateXP, float, MaxUltimateXP);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUltimateStatusSignature, bool, bIsAvailable);
@@ -46,6 +47,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URP_HealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* StepSoundComponent;
 
 protected:
 
@@ -251,6 +255,8 @@ public:
 	ERP_CharacterType GetCharacterType() { return CharacterType; };
 
 	URP_HealthComponent* GetHealthComponent() { return HealthComponent; };
+
+	void PlayStepSound();
 
 protected:
 

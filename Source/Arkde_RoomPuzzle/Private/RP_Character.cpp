@@ -15,6 +15,7 @@
 #include "Core/RP_GameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Core/RP_GameInstance.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 ARP_Character::ARP_Character()
@@ -48,6 +49,9 @@ ARP_Character::ARP_Character()
 	MeleeDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	HealthComponent = CreateDefaultSubobject<URP_HealthComponent>(TEXT("HealthComponent"));
+
+	StepSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("StepSoundComponent"));
+	StepSoundComponent->SetupAttachment(RootComponent);
 
 	bUltimateWithTick = false;
 	MaxUltimateXP = 100.0f;
@@ -429,4 +433,9 @@ void ARP_Character::BeginUltimateBehaviour()
 	{
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle_Ultimate, this, &ARP_Character::UpdateUltimateDurationWithTimer, UltimateFrequency, true);
 	}
+}
+
+void ARP_Character::PlayStepSound()
+{
+	StepSoundComponent->Play();
 }
