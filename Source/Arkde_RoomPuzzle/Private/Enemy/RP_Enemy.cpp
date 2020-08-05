@@ -79,7 +79,7 @@ bool ARP_Enemy::TrySpawnLoot()
 		return false;
 	}
 
-	float SelectedProbability = FMath::RandRange(0.0f, 100.0f);
+	const float SelectedProbability = FMath::RandRange(0.0f, 100.0f);
 	if (SelectedProbability <= LootProbability)
 	{
 		FActorSpawnParameters SpawnParameter;

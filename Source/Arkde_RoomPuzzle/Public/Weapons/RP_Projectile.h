@@ -49,7 +49,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void SetDamage(float NewDamage);
+	void SetDamage(const float NewDamage);
 	void SetDamageType(TSubclassOf<UDamageType> NewDamageType);
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;

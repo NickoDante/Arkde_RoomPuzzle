@@ -38,7 +38,7 @@ void ARP_Projectile::Tick(float DeltaTime)
 
 }
 
-void ARP_Projectile::SetDamage(float NewDamage)
+void ARP_Projectile::SetDamage(const float NewDamage)
 {
 	Damage = NewDamage;
 }

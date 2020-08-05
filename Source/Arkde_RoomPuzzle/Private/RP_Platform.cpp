@@ -50,8 +50,8 @@ void ARP_Platform::Move()
 		upDirection = upDirection * -1;
 	}
 
-	FVector CurrentVelocity = upDirection * Speed;
-	FVector NewPosition = GetActorLocation() + CurrentVelocity;
+	const FVector CurrentVelocity = upDirection * Speed;
+	const FVector NewPosition = GetActorLocation() + CurrentVelocity;
 	SetActorLocation(NewPosition);
 
 	if ((bIsGoingUp && GetActorLocation().Z >= MaxHeight) || (!bIsGoingUp && GetActorLocation().Z <= MinHeight))

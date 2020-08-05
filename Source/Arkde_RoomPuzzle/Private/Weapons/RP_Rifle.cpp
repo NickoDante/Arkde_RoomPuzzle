@@ -28,8 +28,8 @@ void ARP_Rifle::StartAction()
 
 		CurrentOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
-		FVector ShotDirection = EyeRotation.Vector();
-		FVector TraceEnd = EyeLocation + (ShotDirection * TraceLenght);
+		const FVector ShotDirection = EyeRotation.Vector();
+		const FVector TraceEnd = EyeLocation + (ShotDirection * TraceLenght);
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(this);
@@ -39,7 +39,7 @@ void ARP_Rifle::StartAction()
 		FVector TraceEndPoint = TraceEnd;
 
 		FHitResult HitResult;
-		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams);
+		const bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams);
 
 		if (bHit)
 		{

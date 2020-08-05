@@ -20,7 +20,7 @@ void URP_GameInstance::AddEnemyDefeatedToCounter()
 void URP_GameInstance::SaveData()
 {
 	USaveGame* SaveGameObject = nullptr;
-	bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
+	const bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
 
 	if (bExistingData)
 	{
@@ -46,7 +46,7 @@ void URP_GameInstance::SaveData()
 void URP_GameInstance::LoadData()
 {
 	USaveGame* SaveGameObject = nullptr;
-	bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
+	const bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
 
 	if (bExistingData)
 	{
