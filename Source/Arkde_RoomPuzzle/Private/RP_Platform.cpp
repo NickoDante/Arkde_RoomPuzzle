@@ -21,6 +21,7 @@ ARP_Platform::ARP_Platform()
 	Speed = 10.0f;
 	MinHeight = 0.0f;
 	MaxHeight = 50.0f;
+
 }
 
 // Called when the game starts or when spawned
